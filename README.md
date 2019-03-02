@@ -1,10 +1,13 @@
 kwikbio-repo
 ============
 
-First kwiKBio repository.
-Welcome to the kwiKBio Community!!
+Welcome to the kwiKBio Community!! 
+This note is being posted: 3-1-2019.
 
-This note: 3-1-2019.
+Please jump to the primary kwikBio development space on GitHub, which is here:
+
+https://github.com/kwikBioInc 
+
 Please see: https://github.com/orgs/kwikBioInc/projects 
 
 We are currently setting up projects for the Community Forum feedback to flow through BIOMEDSERVER.COM.  We are open to suggestions and assistance in improving this function (as well as any other ideas, comments, etc., for other functionality).
