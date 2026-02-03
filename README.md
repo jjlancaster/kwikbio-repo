@@ -1,6 +1,68 @@
 kwikbio-repo
 ============
 
+# FastScience!7 – Firebase + Stripe Subscription Web App
+
+This project is a starter architecture for a subscription-based web application using:
+
+- Firebase Authentication
+- Firestore for user + subscription state
+- Firebase Cloud Functions
+- Stripe Checkout + webhooks
+- Firebase Hosting
+
+It’s optimized for fast iteration, classroom-ready deployment, and integration with tools like GitHub Copilot and Replit.
+
+---
+
+## Features
+
+- Email/password (or OAuth) login via Firebase Auth  
+- Paid subscription flow using Stripe Checkout  
+- Webhook-driven entitlement management (no trusting client flags)  
+- Firestore Security Rules gating paid content  
+- Idempotent webhook processing with event logging  
+
+---
+
+## Tech Stack
+
+- **Frontend:** Any JS framework (React/Next.js recommended), Firebase Web SDK, Stripe.js  
+- **Backend:** Firebase Cloud Functions (Node 18), Express, Stripe SDK  
+- **Data:** Firestore (users + subscriptions), `payments` collection for webhook idempotency  
+- **Hosting:** Firebase Hosting
+
+---
+
+## Firestore Data Model
+
+- `users/{uid}`  
+  - `email: string`  
+  - `stripeCustomerId: string`  
+  - `subscriptions.active: boolean`  
+  - `subscriptions.{subscriptionId}.status: string`  
+  - `subscriptions.{subscriptionId}.priceId: string`  
+  - `subscriptions.{subscriptionId}.current_period_end: timestamp`  
+  - `lastStripeEvent: string`
+
+- `payments/{eventId}`  
+  - `processedAt: timestamp`  
+  - `eventType: string`
+
+---
+
+## Setup
+
+### 1. Clone and install
+
+```bash
+git clone <YOUR_REPO_URL>
+cd <YOUR_REPO_NAME>
+cd functions
+npm install
+
+=============
+
 Welcome to the kwiKBio Community!! 
 This note is being posted: 3-1-2019.
 
