@@ -225,7 +225,7 @@
 
         <div class="info-box">
             <strong>What is A-B-S-P-O?</strong> It's a 5-variable framework for semantic search where 
-            A (question type) + B (verb) + S (subject) + P (predicate) + O (object) form a complete semantic statement.
+            A (question type: who/what/which/where/when/why/how) + B (verb) + S (subject entity) + P (predicate) + O (object entity) form a complete semantic statement.
             S-P-O often forms an RDF triple (node-arc-node) in knowledge graphs.
         </div>
 
@@ -256,6 +256,7 @@
                         <option value="">Select question type...</option>
                         <option value="who">Who</option>
                         <option value="what">What</option>
+                        <option value="which">Which</option>
                         <option value="where">Where</option>
                         <option value="when">When</option>
                         <option value="why">Why</option>
@@ -428,7 +429,7 @@
 
             // Simple parsing to suggest values
             // Detect question type (A)
-            const questionTypes = ['who', 'what', 'where', 'when', 'why', 'how'];
+            const questionTypes = ['who', 'what', 'which', 'where', 'when', 'why', 'how'];
             for (const type of questionTypes) {
                 if (query.startsWith(type)) {
                     document.getElementById('componentA').value = type;

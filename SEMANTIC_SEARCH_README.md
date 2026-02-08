@@ -8,11 +8,11 @@ This interface implements the A-B-S-P-O framework for building semantic search s
 
 A-B-S-P-O is a 5-variable vector framework for representing semantic search statements:
 
-- **A (Question Type)**: {who, what, where, when, why, how}
+- **A (Question Type)**: {who, what, which, where, when, why, how}
 - **B (Verb)**: Main verb forms {be, have, be able to, increase, reduce, etc.}
-- **S (Subject)**: The main entity, noun, or energetic unit being queried
+- **S (Subject)**: The main entity, noun, or concept being queried
 - **P (Predicate)**: The relationship, property, or causation connecting S and O
-- **O (Object)**: The target entity, noun, or energetic unit that relates to S
+- **O (Object)**: The target entity, noun, or concept that relates to S
 
 The S-P-O components form an **RDF triple** (node-arc-node) commonly used in knowledge graphs.
 
