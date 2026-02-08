@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-B-S-P-O Semantic Search Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .initial-input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .label-description {
+            display: block;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select {
+            cursor: pointer;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        .abspo-builder {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .abspo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .result-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .result-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .semantic-statement {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 1.1em;
+            line-height: 1.8;
+            backdrop-filter: blur(10px);
+        }
+
+        .statement-part {
+            display: inline;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin: 2px;
+            font-weight: 600;
+        }
+
+        .part-a { background: rgba(255, 193, 7, 0.3); }
+        .part-b { background: rgba(76, 175, 80, 0.3); }
+        .part-s { background: rgba(33, 150, 243, 0.3); }
+        .part-p { background: rgba(156, 39, 176, 0.3); }
+        .part-o { background: rgba(244, 67, 54, 0.3); }
+
+        .rdf-triple {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 0.95em;
+        }
+
+        .helper-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .abspo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 A-B-S-P-O Semantic Search Builder</h1>
+        <p class="subtitle">
+            Create precise semantic queries using the A-B-S-P-O framework for knowledge graphs and RDF triples.
+            This interface helps you construct structured queries like those used in advanced search engines.
+        </p>
+
+        <div class="info-box">
+            <strong>What is A-B-S-P-O?</strong> It's a 5-variable framework for semantic search where 
+            A (question type) + B (verb) + S (subject) + P (predicate) + O (object) form a complete semantic statement.
+            S-P-O often forms an RDF triple (node-arc-node) in knowledge graphs.
+        </div>
+
+        <div class="initial-input-section">
+            <div class="input-group">
+                <label for="initialQuery">
+                    Start with your question or search intent:
+                    <span class="label-description">Enter what you want to find or understand</span>
+                </label>
+                <textarea 
+                    id="initialQuery" 
+                    placeholder="e.g., What proteins are involved in DNA repair? How does aspirin reduce inflammation?"
+                ></textarea>
+                <button onclick="parseInitialQuery()">Analyze & Build Query</button>
+            </div>
+        </div>
+
+        <div class="abspo-builder">
+            <h2 style="margin-bottom: 20px; color: #333;">Build Your Semantic Statement</h2>
+            
+            <div class="abspo-grid">
+                <div class="input-group">
+                    <label for="componentA">
+                        A - Question Type
+                        <span class="label-description">What type of question are you asking?</span>
+                    </label>
+                    <select id="componentA" onchange="updateStatement()">
+                        <option value="">Select question type...</option>
+                        <option value="who">Who</option>
+                        <option value="what">What</option>
+                        <option value="where">Where</option>
+                        <option value="when">When</option>
+                        <option value="why">Why</option>
+                        <option value="how">How</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="componentB">
+                        B - Verb Form
+                        <span class="label-description">The main verb of your question</span>
+                    </label>
+                    <select id="componentB" onchange="updateStatement()">
+                        <option value="">Select verb...</option>
+                        <option value="is">is/are (be)</option>
+                        <option value="has">has/have</option>
+                        <option value="can">can (be able to)</option>
+                        <option value="increases">increases</option>
+                        <option value="reduces">reduces</option>
+                        <option value="affects">affects</option>
+                        <option value="causes">causes</option>
+                        <option value="regulates">regulates</option>
+                        <option value="inhibits">inhibits</option>
+                        <option value="activates">activates</option>
+                        <option value="binds">binds to</option>
+                        <option value="produces">produces</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="componentS">
+                    S - Subject Entity
+                    <span class="label-description">The main entity, noun, or concept (what the question is about)</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="componentS" 
+                    placeholder="e.g., protein, gene, drug, cell, process"
+                    oninput="updateStatement()"
+                />
+                <p class="helper-text">This is the subject node in your RDF triple</p>
+            </div>
+
+            <div class="input-group">
+                <label for="componentP">
+                    P - Predicate/Relationship
+                    <span class="label-description">The relationship or property connecting S and O</span>
+                </label>
+                <select id="componentP" onchange="updateStatement()">
+                    <option value="">Select relationship...</option>
+                    <option value="interacts with">interacts with</option>
+                    <option value="regulates">regulates</option>
+                    <option value="inhibits">inhibits</option>
+                    <option value="activates">activates</option>
+                    <option value="is part of">is part of</option>
+                    <option value="causes">causes</option>
+                    <option value="participates in">participates in</option>
+                    <option value="binds to">binds to</option>
+                    <option value="produces">produces</option>
+                    <option value="located in">located in</option>
+                    <option value="associated with">associated with</option>
+                    <option value="equivalent to">equivalent to</option>
+                </select>
+                <input 
+                    type="text" 
+                    id="componentP_custom" 
+                    placeholder="Or enter custom relationship..."
+                    style="margin-top: 10px;"
+                    oninput="updateStatement()"
+                />
+                <p class="helper-text">This is the arc/edge in your RDF triple</p>
+            </div>
+
+            <div class="input-group">
+                <label for="componentO">
+                    O - Object Entity
+                    <span class="label-description">The target entity, noun, or concept (what S relates to)</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="componentO" 
+                    placeholder="e.g., pathway, disease, molecule, function"
+                    oninput="updateStatement()"
+                />
+                <p class="helper-text">This is the object node in your RDF triple</p>
+            </div>
+        </div>
+
+        <div class="result-section">
+            <h2>📋 Your Semantic Statement</h2>
+            <div class="semantic-statement" id="statementOutput">
+                <em>Fill in the components above to build your semantic search statement...</em>
+            </div>
+            <div class="rdf-triple" id="rdfTriple" style="display: none;">
+                <strong>RDF Triple (S-P-O):</strong>
+                <div id="rdfOutput" style="margin-top: 8px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatement() {
+            const a = document.getElementById('componentA').value;
+            const b = document.getElementById('componentB').value;
+            const s = document.getElementById('componentS').value.trim();
+            const pSelect = document.getElementById('componentP').value;
+            const pCustom = document.getElementById('componentP_custom').value.trim();
+            const p = pCustom || pSelect;
+            const o = document.getElementById('componentO').value.trim();
+
+            const output = document.getElementById('statementOutput');
+            const rdfSection = document.getElementById('rdfTriple');
+            const rdfOutput = document.getElementById('rdfOutput');
+
+            // Check if we have enough components to build a statement
+            if (!a && !b && !s && !p && !o) {
+                output.innerHTML = '<em>Fill in the components above to build your semantic search statement...</em>';
+                rdfSection.style.display = 'none';
+                return;
+            }
+
+            // Build the statement
+            let statement = '';
+            
+            if (a) {
+                statement += `<span class="statement-part part-a">${a.toUpperCase()}</span> `;
+            }
+            
+            if (b) {
+                statement += `<span class="statement-part part-b">${b}</span> `;
+            }
+            
+            if (s) {
+                statement += `<span class="statement-part part-s">${s}</span> `;
+            }
+            
+            if (p) {
+                statement += `<span class="statement-part part-p">${p}</span> `;
+            }
+            
+            if (o) {
+                statement += `<span class="statement-part part-o">${o}</span>`;
+            }
+
+            if (statement) {
+                output.innerHTML = statement + '?';
+            }
+
+            // Show RDF triple if we have S, P, and O
+            if (s && p && o) {
+                rdfSection.style.display = 'block';
+                rdfOutput.innerHTML = `
+                    <strong>Subject:</strong> <span class="statement-part part-s">${s}</span><br>
+                    <strong>Predicate:</strong> <span class="statement-part part-p">${p}</span><br>
+                    <strong>Object:</strong> <span class="statement-part part-o">${o}</span>
+                `;
+            } else {
+                rdfSection.style.display = 'none';
+            }
+        }
+
+        function parseInitialQuery() {
+            const query = document.getElementById('initialQuery').value.trim().toLowerCase();
+            
+            if (!query) {
+                alert('Please enter a question or search intent first.');
+                return;
+            }
+
+            // Simple parsing to suggest values
+            // Detect question type (A)
+            const questionTypes = ['who', 'what', 'where', 'when', 'why', 'how'];
+            for (const type of questionTypes) {
+                if (query.startsWith(type)) {
+                    document.getElementById('componentA').value = type;
+                    break;
+                }
+            }
+
+            // Detect common verbs (B)
+            const verbs = {
+                'is': /\b(is|are|be)\b/,
+                'has': /\b(has|have)\b/,
+                'can': /\b(can|could|able)\b/,
+                'increases': /\b(increase|increases|elevate)\b/,
+                'reduces': /\b(reduce|reduces|decrease|decreases|lower)\b/,
+                'affects': /\b(affect|affects|influence)\b/,
+                'causes': /\b(cause|causes)\b/,
+                'regulates': /\b(regulate|regulates)\b/,
+                'inhibits': /\b(inhibit|inhibits|block)\b/,
+                'activates': /\b(activate|activates|stimulate)\b/,
+                'binds': /\b(bind|binds|attach)\b/,
+                'produces': /\b(produce|produces|generate)\b/
+            };
+
+            for (const [verb, pattern] of Object.entries(verbs)) {
+                if (pattern.test(query)) {
+                    document.getElementById('componentB').value = verb;
+                    break;
+                }
+            }
+
+            // Detect common predicates (P)
+            const predicates = {
+                'interacts with': /\b(interact|interacts|interaction)\b/,
+                'regulates': /\b(regulate|regulates|regulation)\b/,
+                'inhibits': /\b(inhibit|inhibits|inhibition)\b/,
+                'activates': /\b(activate|activates|activation)\b/,
+                'causes': /\b(cause|causes)\b/,
+                'binds to': /\b(bind|binds|binding)\b/,
+                'located in': /\b(located|location|in the)\b/
+            };
+
+            for (const [pred, pattern] of Object.entries(predicates)) {
+                if (pattern.test(query)) {
+                    document.getElementById('componentP').value = pred;
+                    break;
+                }
+            }
+
+            // Provide guidance in an alert
+            alert('I\'ve analyzed your query and pre-filled some components. Please review and adjust the A-B-S-P-O components below to refine your semantic statement.');
+
+            updateStatement();
+        }
+
+        // Initialize
+        updateStatement();
+    </script>
+</body>
+</html>
