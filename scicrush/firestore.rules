@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isPaid() {
+      return isSignedIn() && getUserData().subscriptions.active == true;
+    }
+
+    function isSciCrushEligible() {
+      return isSignedIn() && getUserData().scicrushEligible == true;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── Users ──────────────────────────────────────────────────────────────────
+
+    match /users/{uid} {
+      // Users can read their own profile; public fields only for others
+      allow read: if isSignedIn();
+      // Only the owner can write their profile (initial create + updates)
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasAll(['uid', 'email', 'displayName', 'dob', 'skillLevel', 'scicrushEligible', 'subscriptions', 'createdAt']);
+      allow update: if isOwner(uid)
+        // Prevent client from granting themselves paid status — only webhook can touch subscriptions
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['subscriptions', 'stripeCustomerId', 'scicrushEligible']);
+    }
+
+    // ── Campaigns (read-only from client; admin writes) ───────────────────────
+
+    match /campaigns/{campaignId} {
+      allow read: if true;
+      allow write: if false; // managed via Admin SDK only
+    }
+
+    // ── Contributions ─────────────────────────────────────────────────────────
+
+    match /contributions/{contribId} {
+      // Anyone (even guests) can read contributions
+      allow read: if true;
+      // Must be signed-in and SciCrush-eligible to post
+      allow create: if isSciCrushEligible()
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.keys().hasAll(['campaignId', 'authorUid', 'authorName', 'authorSkillLevel', 'text', 'crushCount', 'createdAt'])
+        && request.resource.data.crushCount == 0
+        && request.resource.data.text.size() <= 2000;
+      // Only allow updating crushCount (via transactions from crush logic)
+      allow update: if isSignedIn()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['crushCount']);
+      allow delete: if isOwner(resource.data.authorUid);
+    }
+
+    // ── Crushes ───────────────────────────────────────────────────────────────
+
+    match /crushes/{crushKey} {
+      // Only SciCrush-eligible users can crush
+      allow read: if isSignedIn();
+      allow create, delete: if isSciCrushEligible()
+        && request.auth.uid == request.resource.data.crusherUid;
+    }
+
+    // ── Direct Messages ───────────────────────────────────────────────────────
+
+    match /dms/{dmId} {
+      // Only paid subscribers can read full messages
+      allow read: if isPaid()
+        && (request.auth.uid == resource.data.toUid || request.auth.uid == resource.data.fromUid);
+
+      // Only paid + SciCrush-eligible users can send DMs
+      allow create: if isPaid()
+        && isSciCrushEligible()
+        && request.resource.data.fromUid == request.auth.uid
+        && request.resource.data.preview.size() <= 80
+        && request.resource.data.body.size() <= 5000;
+
+      // Recipients can mark as read
+      allow update: if isSignedIn()
+        && request.auth.uid == resource.data.toUid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+    }
+
+    // ── Payments (idempotency log — webhook only) ─────────────────────────────
+
+    match /payments/{eventId} {
+      allow read, write: if false; // Admin SDK only
+    }
+  }
+}

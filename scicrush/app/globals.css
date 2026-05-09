@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --crush-purple: #7c3aed;
+  --crush-purple-light: #a78bfa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #08080f;
+  color: #e5e7eb;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #11111c; }
+::-webkit-scrollbar-thumb { background: #252540; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+/* Skill level badge base */
+.badge-green  { @apply bg-green-900/30 text-green-400 border border-green-800/50; }
+.badge-blue   { @apply bg-blue-900/30 text-blue-400 border border-blue-800/50; }
+.badge-black  { @apply bg-gray-800/60 text-gray-200 border border-gray-600/50; }
+.badge-sapph  { @apply bg-indigo-900/30 text-indigo-300 border border-indigo-700/50; }
+
+/* Glow button */
+.btn-crush {
+  @apply bg-violet-600 hover:bg-violet-500 text-white font-semibold px-6 py-3 rounded-xl
+         transition-all duration-200 shadow-lg hover:shadow-violet-500/30;
+}
+
+.btn-ghost {
+  @apply border border-border text-gray-300 hover:border-crush-light hover:text-crush-light
+         font-medium px-5 py-2.5 rounded-xl transition-all duration-200;
+}
+
+/* Card */
+.card {
+  @apply bg-surface border border-border rounded-2xl;
+}
