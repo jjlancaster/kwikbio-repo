@@ -11,6 +11,7 @@ import { useAuth } from '@/lib/auth-context'
 import { getCampaignById } from '@/lib/campaigns'
 import { Contribution, SKILL_LABELS, SKILL_COLORS } from '@/lib/types'
 import Navbar from '@/components/Navbar'
+import CollaboratoryLauncher from '@/components/CollaboratoryLauncher'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { formatDistanceToNow } from 'date-fns'
@@ -182,8 +183,11 @@ export default function CampaignPage() {
           </div>
         )}
 
+        {/* Collaboratory rooms */}
+        <CollaboratoryLauncher campaignId={id} campaignTitle={campaign.title} />
+
         {/* Contributions feed */}
-        <div className="space-y-4">
+        <div className="mt-8 space-y-4">
           {topLevel.length === 0 && (
             <div className="text-center text-muted py-16 text-sm">
               No contributions yet. Be the first to post a hypothesis. 🧬

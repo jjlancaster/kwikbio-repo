@@ -18,7 +18,10 @@
     "stripe": "^16.2.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "livekit-server-sdk": "^2.6.0",
+    "@livekit/components-react": "^2.6.0",
+    "@livekit/components-styles": "^1.1.0"
   },
   "devDependencies": {
     "typescript": "^5",

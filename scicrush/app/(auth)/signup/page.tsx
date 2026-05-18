@@ -77,18 +77,15 @@ export default function SignupPage() {
         skillLevel,
         scicrushEligible,
         subscriptions: { active: false },
+        platform: 'scicrush',
+        signupSource: 'scicrush_direct',
         createdAt: new Date().toISOString(),
       }
 
       await setDoc(doc(db, 'users', user.uid), profile)
 
-      if (scicrushEligible) {
-        toast.success('Welcome to SciCrush! 🧬')
-        router.push('/campaigns')
-      } else {
-        toast.success('Welcome to kwiKBio! 🟢')
-        router.push('/campaigns')
-      }
+      toast.success('Account created! Welcome 🧬')
+      router.push('/welcome')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Signup failed'
       toast.error(msg)

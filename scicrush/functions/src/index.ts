@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import { differenceInYears, parseISO } from 'date-fns'
+import { FieldValue } from 'firebase-admin/firestore'
 
 admin.initializeApp()
 const db = admin.firestore()
@@ -48,6 +49,23 @@ export const onDMCreated = functions.firestore
       preview: dm.preview ?? '',
       read: false,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    })
+  })
+
+// ── Room participant counter ──────────────────────────────────────────────────
+// Increments room.participantCount when someone joins
+
+export const onRoomParticipantJoined = functions.firestore
+  .document('room_participants/{docId}')
+  .onCreate(async (snap) => {
+    const { roomName } = snap.data()
+    if (!roomName) return
+
+    const roomsSnap = await db.collection('rooms').where('livekitRoomName', '==', roomName).limit(1).get()
+    if (roomsSnap.empty) return
+
+    await roomsSnap.docs[0].ref.update({
+      participantCount: FieldValue.increment(1),
     })
   })
 

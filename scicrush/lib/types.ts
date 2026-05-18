@@ -4,6 +4,9 @@ export type SkillLevel =
   | 'black_diamond'     // ◆  Advanced Scientist (18+, SciCrush)
   | 'sapphire_hexagon'  // 💎 CrowdCureDisease DAO (18+, SciCrush top tier)
 
+export type Platform = 'scicrush' | 'kwikbio' | 'climate_cro' | 'both'
+export type SignupSource = 'scicrush_direct' | 'kwikbio_direct' | 'climate_cro' | 'referral'
+
 export interface UserProfile {
   uid: string
   email: string
@@ -17,6 +20,25 @@ export interface UserProfile {
     [subId: string]: unknown
   }
   lastStripeEvent?: string
+  // kwiKBio funnel linkage
+  platform: Platform
+  signupSource: SignupSource
+  kwiKBioMemberId?: string     // set when user formally activates FS!5 account
+  kwiKBioLinkedAt?: string
+  referralCode?: string        // for tracking SciCrush → kwiKBio conversions
+  createdAt: string
+}
+
+export interface CollaboratoryRoom {
+  id: string
+  campaignId: string
+  name: string
+  hostUid: string
+  hostName: string
+  livekitRoomName: string      // unique room name for LiveKit
+  scheduledAt?: string         // optional scheduled time
+  active: boolean
+  participantCount: number
   createdAt: string
 }
 
