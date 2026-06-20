@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-B-S-P-O Examples</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-title {
+            color: #333;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .natural-query {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #1565c0;
+        }
+
+        .abspo-breakdown {
+            margin-top: 15px;
+        }
+
+        .component {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: baseline;
+        }
+
+        .component-label {
+            font-weight: 700;
+            min-width: 30px;
+            color: #666;
+        }
+
+        .component-value {
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .a-value { background: rgba(255, 193, 7, 0.3); }
+        .b-value { background: rgba(76, 175, 80, 0.3); }
+        .s-value { background: rgba(33, 150, 243, 0.3); }
+        .p-value { background: rgba(156, 39, 176, 0.3); }
+        .o-value { background: rgba(244, 67, 54, 0.3); }
+
+        .rdf-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .rdf-title {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .rdf-triple {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .try-button {
+            margin-top: 15px;
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .try-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .section-header {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section-header h2 {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 A-B-S-P-O Semantic Search Examples</h1>
+        <p class="intro">
+            Explore real-world examples of how to build semantic search statements using the A-B-S-P-O framework.
+            Each example shows how natural language questions are decomposed into structured semantic queries.
+        </p>
+
+        <div class="section-header">
+            <h2>🧬 Biological & Medical Research</h2>
+        </div>
+
+        <div class="example-grid">
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Biology</span>
+                    Protein Involvement
+                </div>
+                <div class="natural-query">
+                    "What proteins are involved in DNA repair?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">what</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">are</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">proteins</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">participates in</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">DNA repair</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>proteins</strong> → participates in → <strong>DNA repair</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Medicine</span>
+                    Drug Mechanism
+                </div>
+                <div class="natural-query">
+                    "How does aspirin reduce inflammation?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">how</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">reduces</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">aspirin</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">reduces</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">inflammation</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>aspirin</strong> → reduces → <strong>inflammation</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Genetics</span>
+                    Gene Regulation
+                </div>
+                <div class="natural-query">
+                    "Which genes regulate cell growth?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">which</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">regulate</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">genes</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">regulates</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">cell growth</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>genes</strong> → regulates → <strong>cell growth</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>🔬 Molecular Biology</h2>
+        </div>
+
+        <div class="example-grid">
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Biochemistry</span>
+                    Protein Interaction
+                </div>
+                <div class="natural-query">
+                    "What enzymes bind to ATP?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">what</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">bind</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">enzymes</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">binds to</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">ATP</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>enzymes</strong> → binds to → <strong>ATP</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Cell Biology</span>
+                    Pathway Analysis
+                </div>
+                <div class="natural-query">
+                    "Which pathways are affected by oxidative stress?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">which</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">are</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">pathways</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">affected by</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">oxidative stress</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>pathways</strong> → affected by → <strong>oxidative stress</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Biochemistry</span>
+                    Enzymatic Activity
+                </div>
+                <div class="natural-query">
+                    "What does kinase phosphorylate?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">what</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">does</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">kinase</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">phosphorylates</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">target proteins</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>kinase</strong> → phosphorylates → <strong>target proteins</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>🧠 Disease & Pathology</h2>
+        </div>
+
+        <div class="example-grid">
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Pathology</span>
+                    Disease Causation
+                </div>
+                <div class="natural-query">
+                    "What mutations cause cancer?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">what</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">cause</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">mutations</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">causes</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">cancer</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>mutations</strong> → causes → <strong>cancer</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Neuroscience</span>
+                    Neural Mechanisms
+                </div>
+                <div class="natural-query">
+                    "How do neurotransmitters affect mood?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">how</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">affect</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">neurotransmitters</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">affects</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">mood</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>neurotransmitters</strong> → affects → <strong>mood</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">
+                    <span class="category-badge">Immunology</span>
+                    Immune Response
+                </div>
+                <div class="natural-query">
+                    "Which antibodies neutralize the virus?"
+                </div>
+                <div class="abspo-breakdown">
+                    <div class="component">
+                        <span class="component-label">A:</span>
+                        <span class="component-value a-value">which</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">B:</span>
+                        <span class="component-value b-value">neutralize</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">S:</span>
+                        <span class="component-value s-value">antibodies</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">P:</span>
+                        <span class="component-value p-value">neutralizes</span>
+                    </div>
+                    <div class="component">
+                        <span class="component-label">O:</span>
+                        <span class="component-value o-value">virus</span>
+                    </div>
+                </div>
+                <div class="rdf-section">
+                    <div class="rdf-title">RDF Triple (S-P-O):</div>
+                    <div class="rdf-triple">
+                        <strong>antibodies</strong> → neutralizes → <strong>virus</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px; text-align: center; padding: 30px; background: #f8f9fa; border-radius: 12px;">
+            <h2 style="margin-bottom: 15px;">Ready to build your own semantic queries?</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Try the interactive A-B-S-P-O Semantic Search Builder
+            </p>
+            <a href="semantic-search.html" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 15px 40px; border-radius: 8px; font-weight: 600; transition: all 0.3s ease;">
+                Open Semantic Search Builder →
+            </a>
+        </div>
+    </div>
+</body>
+</html>
