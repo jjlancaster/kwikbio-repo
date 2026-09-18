@@ -2,30 +2,41 @@ import { prisma } from '@/lib/prisma'
 import { getCachedSecret } from '@/lib/secrets'
 
 /**
- * Verifies that a given Telegram user ID belongs to an active ADMIN in the
- * hydrojoule system. Used as the gatekeeper before any deploy action.
+ * SECURITY: step-up verification MUST be bound to the authenticated user.
  *
- * @param telegramId - The numeric Telegram user ID as a string
- * @returns true if the telegramId maps to a verified ADMIN user
+ * Confirms that `telegramId` is the Telegram account linked to THIS specific
+ * user, and that the user is an ADMIN. This is the only safe check for deploy
+ * step-up.
+ *
+ * The previous helper (`verifyTelegramAdmin`) took only a telegramId and
+ * returned true if it matched *any* ADMIN. Because the id arrived in the
+ * request body, one Admin could clear step-up using another Admin's Telegram
+ * id — defeating the second factor. It has been removed; do not reintroduce a
+ * check that is not bound to a userId.
+ *
+ * @param userId     - Authenticated session user id (never from the client)
+ * @param telegramId - Telegram id being presented as the second factor
+ * @returns true only if telegramId is this user's linked id and they are ADMIN
  */
-export async function verifyTelegramAdmin(telegramId: string): Promise<boolean> {
-  if (!telegramId || telegramId.trim() === '') {
+export async function verifyTelegramForUser(
+  userId: string,
+  telegramId: string
+): Promise<boolean> {
+  if (!userId || !telegramId || telegramId.trim() === '') {
     return false
   }
 
-  const user = await prisma.user.findFirst({
-    where: {
-      telegramId: telegramId.trim(),
-      role: 'ADMIN',
-    },
-    select: {
-      id: true,
-      role: true,
-      telegramId: true,
-    },
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, role: true, telegramId: true },
   })
 
-  return user !== null && user.role === 'ADMIN'
+  if (!user || user.role !== 'ADMIN' || !user.telegramId) {
+    return false
+  }
+
+  // Bind: the presented id must be the id linked to this same account.
+  return user.telegramId.trim() === telegramId.trim()
 }
 
 /**

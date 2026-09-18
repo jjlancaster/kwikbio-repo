@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { isAdmin } from '@/lib/rbac'
-import { verifyTelegramAdmin } from '@/lib/telegram'
+import { verifyTelegramForUser } from '@/lib/telegram'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -9,7 +9,7 @@ export const runtime = 'nodejs'
 export async function POST(req: NextRequest) {
   // 1. Verify the session is an ADMIN
   const session = await auth()
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 })
   }
   if (!isAdmin(session)) {
@@ -29,12 +29,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'telegramId is required' }, { status: 400 })
   }
 
-  // 3. Verify Telegram ID belongs to an ADMIN
-  const isVerified = await verifyTelegramAdmin(telegramId)
+  // 3. SECURITY: the presented Telegram id must be the one linked to THIS
+  //    authenticated admin. Previously this accepted any ADMIN's Telegram id,
+  //    so one admin could clear step-up with another admin's id.
+  const isVerified = await verifyTelegramForUser(session.user.id, telegramId)
 
   if (!isVerified) {
+    // Deliberately non-specific: do not reveal whether the id exists or
+    // belongs to a different account.
     return NextResponse.json(
-      { error: 'Telegram ID is not linked to an ADMIN account.' },
+      { error: 'Telegram verification failed for this account.' },
       { status: 403 }
     )
   }
